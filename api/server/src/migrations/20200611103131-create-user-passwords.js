@@ -1,0 +1,40 @@
+'use strict';
+module.exports = {
+  up: (queryInterface, Sequelize) => {
+    return queryInterface.createTable('user_passwords', {
+      id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        primaryKey: true,
+      },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      userId: {
+        type:Sequelize.UUID,
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+
+        references: {
+            model: 'Users',
+            key: 'id',
+            deferrable: Sequelize.Deferrable.INITIALLY_DEFERRED,
+            onDelete: 'cascade',
+            onUpdate: 'cascade',
+        },
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+  },
+  down: (queryInterface, Sequelize) => {
+    return queryInterface.dropTable('user_passwords');
+  }
+};
